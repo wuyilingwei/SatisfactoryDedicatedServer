@@ -1,5 +1,5 @@
-# SatisfactoryDedicatedServer-1.0   
-SatisfactoryDedicatedServer-1.0 Version，One-click start server code
+# SatisfactoryDedicatedServer-1.1 
+SatisfactoryDedicatedServer-1.1 Version，One-click start server code
 
 This code is suitable for Windows
 
