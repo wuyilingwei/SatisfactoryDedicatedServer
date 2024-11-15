@@ -24,8 +24,6 @@ taskkill /f /t /im FactoryServer-Win64-Shipping-Cmd.exe >nul 2>&1
 
 setlocal
 
-setlocal EnableDelayedExpansion
-
 set PORT=7777
 
 :check_port
@@ -33,7 +31,7 @@ set "found="
 for /F "tokens=2 delims=:" %%a in ('netstat -a -n -o -p UDP ^| findstr :%PORT%') do set "found=%%a"
 if not defined found (
     echo %date%%time% SatisfactoryDedicatedServer is offline. Restarting the server, please be patient
-    nircmd stopprocess "FactoryServer-Win64-Shipping-Cmd.exe"
+    nircmd closeprocess "FactoryServer-Win64-Shipping-Cmd.exe"
     timeout /T 10 >nul
     "%~dp0satisfactoryserver/FactoryServer.exe" -log -unattended -port=7777
 )
