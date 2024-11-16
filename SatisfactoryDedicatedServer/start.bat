@@ -54,7 +54,7 @@ for /f "tokens=*" %%i in ('netstat -a -b -n -o -p UDP ^| findstr "FactoryServer-
 
 if !found! == 0 (
     if !restarting_grace! != 0 (
-        set /a restarting_grace = !restarting_grace! - 1
+        set /a restarting_grace=!restarting_grace!-1
         echo [Warning] %date:~0,11%%time% Cannot find FactoryServer-Win64-Shipping-Cmd.exe listening on UDP port %port%. Remaining restarting_grace: %restarting_grace%
         goto check
     )
