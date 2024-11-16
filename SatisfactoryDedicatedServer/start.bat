@@ -39,8 +39,8 @@ timeout /T 30 >nul
 
 set found=0
 :: set restarting_grace depending on your computer performance, n*30 seconds
-set restarting_grace_default = 2
-set restarting_grace = %restarting_grace_default%
+set restarting_grace_default=2
+set restarting_grace=%restarting_grace_default%
 
 for /f "tokens=*" %%i in ('netstat -a -b -n -o -p UDP ^| findstr "FactoryServer-Win64-Shipping-Cmd.exe"') do (
     set "line=%%i"
@@ -68,10 +68,10 @@ if !found! == 0 (
     )
     echo [INFO] %date:~0,11%%time% Restarting Server
     start "" "%~dp0satisfactoryserver/FactoryServer.exe" -log -unattended -port=7777
-    set restarting_grace = %restarting_grace_default%
+    set restarting_grace=%restarting_grace_default%
 ) else (
     echo [INFO] %date:~0,11%%time% SatisfactionDedicatedServer is working properly. Next check in 30 seconds
-    set restarting_grace = 0
+    set restarting_grace=0
 )
 
 
