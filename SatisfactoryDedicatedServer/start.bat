@@ -26,16 +26,29 @@ setlocal
 
 set PORT=7777
 
-:check_port
-set "found="
-for /F "tokens=2 delims=:" %%a in ('netstat -a -n -o -p UDP ^| findstr :%PORT%') do set "found=%%a"
-if not defined found (
+:check
+
+set found=0
+
+for /f "tokens=*" %%i in ('netstat -a -b -n -o -p UDP ^| findstr "FactoryServer-Win64-Shipping-Cmd.exe"') do (
+    set "line=%%i"
+    for /f "tokens=2,3" %%a in ("!line!") do (
+        if %%b==0.0.0.0:%port% (
+            set found=1
+            goto :break
+        )
+    )
+)
+
+if !found! == 0 (
     echo %date%%time% SatisfactoryDedicatedServer is offline. Restarting the server, please be patient
     nircmd closeprocess "FactoryServer-Win64-Shipping-Cmd.exe"
     timeout /T 10 >nul
     "%~dp0satisfactoryserver/FactoryServer.exe" -log -unattended -port=7777
 )
-echo %date%%time% SatisfactionDedicatedServer is working properly. QQ:1056484009 QQgroup:264127585
+else (
+    echo %date%%time% SatisfactionDedicatedServer is working properly.
+)
 
 timeout /T 30 >nul
-goto check_port
+goto check
