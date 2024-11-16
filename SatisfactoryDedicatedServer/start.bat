@@ -1,4 +1,4 @@
-@echo off
+
 
 title checking for admin rights
 >nul 2>&1 "%SYSTEMROOT%\system32\cacls.exe" "%SYSTEMROOT%\system32\config\system"
@@ -53,19 +53,17 @@ for /f "tokens=*" %%i in ('netstat -a -b -n -o -p UDP ^| findstr "FactoryServer-
 )
 
 if !found! == 0 (
-    if !restarting_grace! != 0 (
+    if !restarting_grace! NEQ 0 (
         set /a restarting_grace=!restarting_grace!-1
-        echo [Warning] %date:~0,11%%time% Cannot find FactoryServer-Win64-Shipping-Cmd.exe listening on UDP port %port%. Remaining restarting_grace: %restarting_grace%
+        echo [Warning] %date:~0,11%%time% Cannot find FactoryServer-Win64-Shipping-Cmd.exe listening on UDP port %port%. Remaining restarting_grace: !restarting_grace!
         goto check
     )
     echo [ERROR] %date:~0,11%%time% SatisfactoryDedicatedServer UDP listen is accident offline.
-    echo [Warning] %date:~0,11%%time% Sent closeprocess command to FactoryServer-Win64-Shipping-Cmd.exe, waiting 30 seconds for it to close
+    echo [Warning] %date:~0,11%%time% Sent closeprocess command to FactoryServer-Win64-Shipping-Cmd.exe, waiting 25 seconds for it to close, and 5 seconds for force close
     nircmd closeprocess "FactoryServer-Win64-Shipping-Cmd.exe"
-    timeout /T 30 >nul
-    if tasklist /fi "imagename eq FactoryServer-Win64-Shipping-Cmd.exe" | find ":" >nul (
-        echo [ERROR] %date:~0,11%%time% FactoryServer-Win64-Shipping-Cmd.exe is still running. Force kill it.
-        taskkill /f /t /im FactoryServer-Win64-Shipping-Cmd.exe >nul 2>&1
-    )
+    timeout /T 25 >nul
+    taskkill /f /t /im FactoryServer-Win64-Shipping-Cmd.exe >nul 2>&1
+    timeout /T 5 >nul
     echo [INFO] %date:~0,11%%time% Restarting Server
     start "" "%~dp0satisfactoryserver/FactoryServer.exe" -log -unattended -port=7777
     set restarting_grace=%restarting_grace_default%
