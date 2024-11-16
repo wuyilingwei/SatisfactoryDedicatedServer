@@ -33,14 +33,15 @@ set PORT=7777
 
 echo [INFO] %date:~0,11%%time% Daemon Online
 
+:: set restarting_grace depending on your computer performance, n*30 seconds
+set restarting_grace_default=2
+set restarting_grace=%restarting_grace_default%
+
 :check
 
 timeout /T 30 >nul
 
 set found=0
-:: set restarting_grace depending on your computer performance, n*30 seconds
-set restarting_grace_default=2
-set restarting_grace=%restarting_grace_default%
 
 for /f "tokens=*" %%i in ('netstat -a -b -n -o -p UDP ^| findstr "FactoryServer-Win64-Shipping-Cmd.exe"') do (
     set "line=%%i"
