@@ -67,6 +67,7 @@ if !found! == 0 (
     echo %date:~0,11%%time% Satisfactory Server Error, restarting >> %log_file%
     echo %date:~0,11%%time% Satisfactory Server Error, restarting
     powershell -Command "& { [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] > $null; $template = [Windows.UI.Notifications.ToastNotificationManager]::GetTemplateContent([Windows.UI.Notifications.ToastTemplateType]::ToastText02); $xml = New-Object Windows.Data.Xml.Dom.XmlDocument; $xml.LoadXml($template.GetXml()); $toastElements = $xml.GetElementsByTagName('text'); if ($toastElements.Count -ge 2) { $titleNode = $xml.CreateTextNode('Satisfactory Server Error'); $toastElements.Item(0).AppendChild($titleNode) > $null; $contentNode = $xml.CreateTextNode('Detected UDP port %port% closed, restarting server.'); $toastElements.Item(1).AppendChild($contentNode) > $null; $toast = [Windows.UI.Notifications.ToastNotification]::new($xml); $notifier = [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier('Satisfactory Dedicated Server'); $notifier.Show($toast); } else { Write-Host 'Unable to create toast notification.' } }" >nul 2>nul
+    REM curl -X POST "https://api.telegram.org/bot{token}/sendMessage?chat_id={chatid}&text=%5BSatisfactory%20Daemon%20Server%5D%0AServer%20Process%20Error%0ARestarting%20Server"
     timeout /T 5 >nul
     explorer "%~dp0demotion.bat"
 ) else (
