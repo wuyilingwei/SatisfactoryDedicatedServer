@@ -1,4 +1,5 @@
 # SatisfactoryDedicatedServer
+
 SatisfactoryDedicatedServer，One-click start server code
 
 This code is suitable for Windows Only, win 10 1803+ is needed.
@@ -6,6 +7,8 @@ This code is suitable for Windows Only, win 10 1803+ is needed.
 Since the release of 1.0, the game server crashes when it is started and cannot be automatically restarted. When the server is detected to be offline, UDP port 7777 is missing. So I wrote a little code to monitor whether UDP port 7777 is online. If it is online, it means that the server is working normally. If it is not online, shut down the current server and restart it.
 
 Detection interval 30s
+
+Some Known problem: suggest CN user use proxy, the game try to send to offical server some info, if failed will waiting about 6-8 mins and try to connect game server.
 
 # Instructions
 
